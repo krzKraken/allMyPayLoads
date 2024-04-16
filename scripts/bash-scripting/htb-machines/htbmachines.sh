@@ -27,38 +27,86 @@ main_url="https://htbmachines.github.io/bundle.js"
 # Function Help Panel
 function helpPanel (){
   echo -e "\n${yellowColour}[+]${endColour} ${grayColour} Uso: ${endColour}"
-  echo -e "\t${purpleColour}-m)${endColour}${grayColour} Buscar por nombre de maquina${endColour}"
-  echo -e "\t${purpleColour}-u)${endColour}${grayColour} Actualizar base de datos${endColour}"
-  echo -e "\t${purpleColour}-h)${endColour}${grayColour} Mostrar este panel de ayuda${endColour}"
+  echo -e "\t${purpleColour}m)${endColour}${grayColour} Buscar por nombre de maquina${endColour}"
+  echo -e "\t${purpleColour}i)${endColour}${grayColour} Buscar por direccion ip${endColour}"
+  echo -e "\t${purpleColour}y)${endColour}${grayColour} Obtener enlace de resolucion de la maquina${endColour}"
+  echo -e "\t${purpleColour}u)${endColour}${grayColour} Actualizar base de datos${endColour}"
+  echo -e "\t${purpleColour}h)${endColour}${grayColour} Mostrar este panel de ayuda${endColour}"
+}
+# Update bundle.js 
+function updateFiles(){
+  tput civis
+  echo -e "${yellowColour}[+]${endColour} ${grayColour}Verificando todos los archivos necesarios...${endColour}\n"
+  sleep 2
+  if [ ! -f bundle.js ]; then
+    echo -e "${greenColour}[+]${endColour} El archivo no existe... Descargando.....\n"
+    sleep 2
+
+    tput civis 
+    curl -s -X GET $main_url | js-beautify > bundle.js 
+    echo -e "Todos los archivos fueron descargados..."
+    tput cnorm
+
+  else
+    echo -e "${yellowColour}[!] ${endColour}${grayColour}El archivo existe, verificando se encuentre actualizado...\n${endColour}"
+    curl -s -X GET $main_url | js-beautify > bundle_temp.js 
+    md5sum_temp_value=$(md5sum bundle_temp.js | awk '{print $1}')
+    md5sum_original_value=$(md5sum bundle.js | awk '{print $1}')
+    if [ "$md5sum_original_value" == "$md5sum_temp_value" ]; then
+      echo -e "\n${yellowColour}[-]${endColour}${grayColour} No existen actualizaciones pendientes...\n${endColour}"
+      rm bundle_temp.js
+    else 
+      echo -e "\n${yellowColour}[+]${endColour}${grayColour} Existen Actualizaciones disponibles...!\n${endColour}"
+      rm bundle.js && mv bundle_temp.js bundle.js
+    fi 
+  fi
+  tput cnorm 
 }
 
 # Function search Machine
 function searchMachine(){
   machineName="$1"
-  echo "$machineName"
-}
-# Update bundle.js 
-function updateFiles(){
-  if [ ! -f bundle.js ]; then
-    echo -e "${greenColour}[+]${endColour} El archivo no existe...\nEmpezando las actualizaciones...\n"
-    tput civis 
-    curl -s -X GET $main_url | js-beautify > bundle.js 
-    echo -e "Todos los archivos fueron descargados..."
-    tput cnorm
-  else
-    echo -e "El archivo existe..."
+  machineName_cheker="$(cat bundle.js | awk "/name: \"$machineName\"/,/resuelta:/" | grep -vE "id|sku|resuelta" | tr -d '"' | tr -d ',' | sed 's/^ *//')"
+  if [ "$machineName_cheker" ]; then  
+    echo -e "${greenColour}[+]${endColour} ${grayColour}\nListando las propiedades de la maquina:${endColour} ${blueColour}$machineName${endColour}\n"
+    cat bundle.js | awk "/name: \"$machineName\"/,/resuelta:/" | grep -vE "id|sku|resuelta" | tr -d '"' | tr -d ',' | sed 's/^ *//'
+  else 
+    echo -e "${redColour}[!]${endColour} La maquina solicitada no existe...\n"
+  fi
+} 
+
+function searchIP(){
+  ipAddress="$1"
+  machineName=$(cat bundle.js | grep "$ipAddress" -B 5 | grep "name:" | awk 'NF{print $NF}' | tr -d '",')
+  if [ "$machineName" ]; then
+    echo -e "\n${greenColour}[+]${endColour} La máquina que corresponde a esa IP ${purpleColour}$ipAddress${endColour} es: ${blueColour}$machineName${endColour}\n"
+  searchMachine $machineName
+  else 
+    echo -e "${redColour}[!]${endColour} La ip proporcionada  no existe...\n"
   fi
 }
 
-# Indivators declaration for integer variable
-declare -i parameter_counter=0 
+function getYouTubeLink(){
+  machineName="$1" 
 
-while getopts "m:uh" arg; do 
+  youtubeLink="$(cat bundle.js | awk "/name: \"$machineName\"/,/resuelta:/" | grep -vE "id|sku|resuelta" | tr -d '"' | tr -d ',' | sed 's/^ *//' | grep "youtube: " | awk 'NF{print $NF}')"
+  if [ "$youtubeLink" ]; then 
+    echo -e "${greenColour}\n[+]${endColour}${grayColour} El link de la maquina${endColour} ${purpleColour} $machineName${endColour}${grayColour} es: ${endColour}${greenColour}$youtubeLink${endColour}"
+  else
+    echo -e "${redColour}\n[!]${endColour}${grayColour} No existe link para la maquina: ${endColour}${purpleColour}$machineName${endColour}"
+  fi
+}
+# Indivators declaration for integer variable
+declare -i parameter_counter=0
+
+while getopts "m:ui:y:h" arg; do 
   case $arg in 
     m) machineName=$OPTARG; let parameter_counter+=1;;
     u) let parameter_counter=2;;
+    i) ipAddress=$OPTARG; let parameter_counter=3;;
+    y) machineName=$OPTARG; let parameter_counter=4;;
     h) ;;
-    
+
   esac 
 done   
 
@@ -66,6 +114,10 @@ if [ $parameter_counter -eq 1 ]; then
   searchMachine $machineName 
 elif [ $parameter_counter -eq 2 ]; then
   updateFiles
-else 
+elif [ $parameter_counter -eq 3 ]; then
+  searchIP $ipAddress
+elif [ $parameter_counter -eq 4 ]; then
+  getYouTubeLink $machineName
+else
   helpPanel 
 fi 
