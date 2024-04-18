@@ -82,7 +82,7 @@ function searchIP(){
     echo -e "\n${greenColour}[+]${endColour} La máquina que corresponde a esa IP ${purpleColour}$ipAddress${endColour} es: ${blueColour}$machineName${endColour}\n"
   searchMachine $machineName
   else 
-    echo -e "${redColour}[!]${endColour} La ip proporcionada  no existe...\n"
+    echo -e "${redColour}[!]${endColour} La ip proporcionada no existe...\n"
   fi
 }
 
@@ -96,15 +96,31 @@ function getYouTubeLink(){
     echo -e "${redColour}\n[!]${endColour}${grayColour} No existe link para la maquina: ${endColour}${purpleColour}$machineName${endColour}"
   fi
 }
+function getMachinesDificulty(){
+  dificultad="$1"
+  machinesNames="$(cat bundle.js | js-beautify | grep "dificultad: \"$dificultad\"" -B 5  | grep "name" | awk 'NF {print $NF}' | tr -d ',"')"
+  if [ "$machinesNames" ]; then
+    echo -e "\n${greenColour}[+]${endColour} ${grayColour}Las maquinas de dificultad${endColour} ${purpleColour}$dificultad${endColour}${grayColour}:${endColour}"
+    echo -e "${purpleColour}$machinesNames ${endColour}"
+  else
+    echo -e "No se encontraron máquinas para la dificultad: $dificultad " 
+  fi 
+}
+function getMachinesOS(){
+  sistemaOperativo="$1"
+  machinesNames="$(cat bundle.js | grep "so: " -B 5 | grep "name" | cat bundle.js | grep "so: \"Windows\"" -B 5 | grep "name: " | awk 'NF{print $NF}' | tr -d ',"')"
+}
 # Indivators declaration for integer variable
 declare -i parameter_counter=0
 
-while getopts "m:ui:y:h" arg; do 
+while getopts "m:ui:y:d:o:h" arg; do 
   case $arg in 
     m) machineName=$OPTARG; let parameter_counter+=1;;
     u) let parameter_counter=2;;
     i) ipAddress=$OPTARG; let parameter_counter=3;;
     y) machineName=$OPTARG; let parameter_counter=4;;
+    d) dificultad=$OPTARG$ let parameter_counter=5;;
+    o) sistemaOperativo=$OPTARG let parameter_counter=6;;
     h) ;;
 
   esac 
@@ -118,6 +134,10 @@ elif [ $parameter_counter -eq 3 ]; then
   searchIP $ipAddress
 elif [ $parameter_counter -eq 4 ]; then
   getYouTubeLink $machineName
+elif [ $parameter_counter -eq 5 ]; then
+  getMachinesDificulty $dificultad
+elif [ $parameter_counter -eq 6 ]; then
+  getMachinesOS $sistemaOperativo
 else
   helpPanel 
 fi 
