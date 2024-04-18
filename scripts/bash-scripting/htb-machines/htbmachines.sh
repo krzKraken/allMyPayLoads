@@ -29,6 +29,8 @@ function helpPanel (){
   echo -e "\n${yellowColour}[+]${endColour} ${grayColour} Uso: ${endColour}"
   echo -e "\t${purpleColour}m)${endColour}${grayColour} Buscar por nombre de maquina${endColour}"
   echo -e "\t${purpleColour}i)${endColour}${grayColour} Buscar por direccion ip${endColour}"
+  echo -e "\t${purpleColour}o)${endColour}${grayColour} Buscar por sistema operativo${endColour}"
+  echo -e "\t${purpleColour}s)${endColour}${grayColour} Buscar por skills Ej: (\"Active Directory\")${endColour}"
   echo -e "\t${purpleColour}y)${endColour}${grayColour} Obtener enlace de resolucion de la maquina${endColour}"
   echo -e "\t${purpleColour}u)${endColour}${grayColour} Actualizar base de datos${endColour}"
   echo -e "\t${purpleColour}h)${endColour}${grayColour} Mostrar este panel de ayuda${endColour}"
@@ -68,7 +70,7 @@ function searchMachine(){
   machineName="$1"
   machineName_cheker="$(cat bundle.js | awk "/name: \"$machineName\"/,/resuelta:/" | grep -vE "id|sku|resuelta" | tr -d '"' | tr -d ',' | sed 's/^ *//')"
   if [ "$machineName_cheker" ]; then  
-    echo -e "${greenColour}[+]${endColour} ${grayColour}\nListando las propiedades de la maquina:${endColour} ${blueColour}$machineName${endColour}\n"
+    echo -e "${greenColour}[+]${endColour} ${grayColour}Listando las propiedades de la maquina:${endColour} ${blueColour}$machineName${endColour}\n"
     cat bundle.js | awk "/name: \"$machineName\"/,/resuelta:/" | grep -vE "id|sku|resuelta" | tr -d '"' | tr -d ',' | sed 's/^ *//'
   else 
     echo -e "${redColour}[!]${endColour} La maquina solicitada no existe...\n"
@@ -77,9 +79,9 @@ function searchMachine(){
 
 function searchIP(){
   ipAddress="$1"
-  machineName=$(cat bundle.js | grep "$ipAddress" -B 5 | grep "name:" | awk 'NF{print $NF}' | tr -d '",')
+  machineName=$(cat bundle.js | grep "$ipAddress" -B 5 | grep "name: " | awk 'NF{print $NF}' | tr -d '",')
   if [ "$machineName" ]; then
-    echo -e "\n${greenColour}[+]${endColour} La máquina que corresponde a esa IP ${purpleColour}$ipAddress${endColour} es: ${blueColour}$machineName${endColour}\n"
+    echo -e "\n${greenColour}[+]${endColour} La máquina que corresponde a la IP ${purpleColour}$ipAddress${endColour} es: ${blueColour}$machineName${endColour}\n"
   searchMachine $machineName
   else 
     echo -e "${redColour}[!]${endColour} La ip proporcionada no existe...\n"
@@ -98,29 +100,73 @@ function getYouTubeLink(){
 }
 function getMachinesDificulty(){
   dificultad="$1"
-  machinesNames="$(cat bundle.js | js-beautify | grep "dificultad: \"$dificultad\"" -B 5  | grep "name" | awk 'NF {print $NF}' | tr -d ',"')"
+
+  machinesNames="$(cat bundle.js | js-beautify | grep -i "dificultad: \"$dificultad\"" -B 5  | grep "name: " | awk 'NF {print $NF}' | tr -d ',"' | column)"
   if [ "$machinesNames" ]; then
     echo -e "\n${greenColour}[+]${endColour} ${grayColour}Las maquinas de dificultad${endColour} ${purpleColour}$dificultad${endColour}${grayColour}:${endColour}"
     echo -e "${purpleColour}$machinesNames ${endColour}"
   else
-    echo -e "No se encontraron máquinas para la dificultad: $dificultad " 
+    echo -e "${redColour}\n[!]${endColour}${grayColour} No se encontraron máquinas para la dificultad:${endColour} ${purpleColour}$dificultad${endColour}\n" 
   fi 
 }
 function getMachinesOS(){
   sistemaOperativo="$1"
-  machinesNames="$(cat bundle.js | grep "so: " -B 5 | grep "name" | cat bundle.js | grep "so: \"Windows\"" -B 5 | grep "name: " | awk 'NF{print $NF}' | tr -d ',"')"
+  machinesNames="$(cat bundle.js | grep "so: " -B 5 | cat bundle.js | grep -i "so: \"$sistemaOperativo\"" -B 5 | grep "name: " | awk 'NF{print $NF}' | tr -d ',"' | column)"
+  if [ "$machinesNames" ]; then
+    echo -e "\n${greenColour}[+]${endColour}${grayColour}Las maquinas con sistema operativo ${endColour}${purpleColour}$sistemaOperativo${endColour} ${grayColour}son:${endColour}\n"
+    echo -e "${purpleColour}$machinesNames${endColour}"
+  else
+
+    echo -e "${redColour}\n[!]${endColour}${grayColour} No se encontraron máquinas para el sistema operativo: ${endColour} ${purpleColour}$sistemaOperativo${endColour}\n" 
+  fi 
+
 }
+ 
+function getOSDifficultyMachines(){
+
+  dificultad="$1"
+  sistemaOperativo="$2" 
+  
+  echo -e "\n${greenColour}[+]${endColour} ${grayColour}Buscando por dificultad: ${endColour} ${purpleColour}$dificultad${endColour}${grayColour} y sistema operativo: ${endColour}${purpleColour} $sistemaOperativo${endColour}\n"
+  machinesNames="$(cat bundle.js | grep -i "dificultad: \"$dificultad\"" -B 6  | grep -i "so: \"$sistemaOperativo\"" -B 5 | grep "name: " | awk 'NF{print $NF}' | tr -d ',"' | column)"
+  if [ ! "$machinesNames" ]; then
+    echo -e "${redColour}\n[!]${endColour}${grayColour} No se encontraron máquinas de dificultad: ${endColour} ${purpleColour}$dificultad${endColour} ${grayColour}y sistema operativo:${endColour}${purpleColour}$sistemaOperativo${endColour}\n" 
+  fi
+    echo -e "${purpleColour}$machinesNames${endColour}"
+
+}
+
+function getSkillMachines(){
+  skills="$1"
+  echo -e "\n${greenColour}[+]${endColour}${grayColour}Buscando por la Skill:${endColour}${purpleColour} $skills${endColour}\n"
+  machinesNames="$(cat bundle.js | grep -i "$skills" -B 7 | grep "name: " | awk 'NF{print $NF}' | tr -d ',"' | column)"
+  
+  if [ "$machinesNames" ]; then 
+    echo -e "\n${greenColour}[+]${endColour}${grayColour}Las maquinas para la skill:${endColour} $skills${endColour} ${grayColour}son:${endColour}"
+    echo -e "$machinesNames"
+  else 
+    
+    echo -e "${redColour}\n[!]${endColour}${grayColour} No se encontraron máquinas para la skill: ${endColour}${purpleColour}$skills${endColour}\n" 
+  fi 
+
+}
+
 # Indivators declaration for integer variable
 declare -i parameter_counter=0
 
-while getopts "m:ui:y:d:o:h" arg; do 
+#Chivatos
+declare -i chivato_dificultad=0 
+declare -i chivato_sistemaOperativo=0 
+
+while getopts "m:ui:y:d:o:s:h" arg; do 
   case $arg in 
     m) machineName=$OPTARG; let parameter_counter+=1;;
     u) let parameter_counter=2;;
     i) ipAddress=$OPTARG; let parameter_counter=3;;
     y) machineName=$OPTARG; let parameter_counter=4;;
-    d) dificultad=$OPTARG$ let parameter_counter=5;;
-    o) sistemaOperativo=$OPTARG let parameter_counter=6;;
+    d) dificultad=$OPTARG; chivato_dificultad=1; let parameter_counter=5;;
+    o) sistemaOperativo=$OPTARG; chivato_sistemaOperativo=1; let parameter_counter=6;;
+    s) skills=$OPTARG; parameter_counter=7;; 
     h) ;;
 
   esac 
@@ -134,10 +180,14 @@ elif [ $parameter_counter -eq 3 ]; then
   searchIP $ipAddress
 elif [ $parameter_counter -eq 4 ]; then
   getYouTubeLink $machineName
+elif [ $chivato_dificultad -eq 1 ] && [ $chivato_sistemaOperativo -eq 1 ]; then
+  getOSDifficultyMachines $dificultad $sistemaOperativo
 elif [ $parameter_counter -eq 5 ]; then
   getMachinesDificulty $dificultad
 elif [ $parameter_counter -eq 6 ]; then
   getMachinesOS $sistemaOperativo
+elif [ $parameter_counter -eq 7 ]; then
+  getSkillMachines "$skills"
 else
   helpPanel 
 fi 
