@@ -37,15 +37,30 @@ print("[blue]lista_cuadrado=[i**2 for i in lista][/blue]")
 print(f"Lista: {lista}, Cuadrado: {lista_cuadrado}")
 
 
-# Break dermina con la iteracion de for y finalza el bucle
+#? Break dermina con la iteracion de for y finalza el bucle
 print(f"\n[green]{separators} break {separators}[/green]")
 for i in range(10):
     if i == 5:
+        print(f"i vale {i}/9 y break detiene bucle")
         break
-    print(i)
-# 
+    print(f"i vale {i}/9")
+#? Continue pasa a la siguiente iteracion
 print(f"\n[green]{separators} continue {separators}[/green]")
 for i in range(10):
-    if i == 5:
+    if i == 5: 
+        print(f"[+] i vale {i} salta condicion")
         continue
     print(i)
+
+#? for else. al terminar el for ejecuta estas lineas de comando
+print(f"\n[green]{separators} else {separators}[/green]")
+for i in range(10):
+    print(f"i vale {i}")
+else:
+    print("el for ha concluido")
+
+#! Si hay un break el else no se ejecutara jamas
+
+
+
+
