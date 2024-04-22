@@ -63,4 +63,13 @@ else:
 
 
 
+print(f"\n[green]{separators}  Condicionales  {separators}[/green]")
+
+#Texto Condicionales
+valor=2
+texto = "Esto es un texto" if valor ==1 else "Este es el otro texto"
+
+print(texto)
+
+
 
