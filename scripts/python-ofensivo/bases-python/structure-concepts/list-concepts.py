@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 from functools import partialmethod
 from rich import print
 
@@ -55,3 +56,6 @@ print(f"Lista letras.reverse(): {letras}")
 # Acceder a los elementos de una lista 
 print(f"[green]{sep}  {sep}[/green]")
 print("elemento pos 0 de letras {letras[0])}")
+
+
+
