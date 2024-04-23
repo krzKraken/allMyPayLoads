@@ -1,8 +1,10 @@
-import math
+#!/usr/bin/env python3
+"""import doc"""
 
 
 def main():
-    pass
+    """fun"""
+    print("hola")
 
 
 if __name__ == "__main__":
