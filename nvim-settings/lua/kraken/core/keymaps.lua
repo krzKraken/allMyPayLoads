@@ -9,7 +9,7 @@ local keymap = vim.keymap -- for conciseness
 -- use jk to exit insert mode
 keymap.set("i", "jk", "<ESC>", { desc = "Exit insert mode with jk" })
 keymap.set("i", "ii", "<ESC>", { desc = "Exit insert mode with ii" })
-
+keymap.set("n", ";", ":", { desc = "CMD enter command mode" })
 -- clear search highlights
 keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
 
