@@ -33,3 +33,19 @@ print(f"Metodo issuset: {set_names.issubset(set_names2)}")
 # Metodo difference
 set_difference = set_names.difference(set_names2)
 print(f"Metodo difference {set_difference}")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
