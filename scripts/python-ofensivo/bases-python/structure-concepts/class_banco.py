@@ -20,6 +20,7 @@ class CuentaBancaria:
         self.balance -= amount
         return f"[+] {self.name} has made a withdraw of {amount} and now has {self.balance} credits"
 
+
 cris = CuentaBancaria(accountNumber=123213, name="Cris", balance=0)
 print(cris.deposit(199))
 print(cris.deposit(299))

@@ -1,0 +1,11 @@
+# MacOS
+.DS_Store
+*.swp
+
+# Linux
+*~
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
