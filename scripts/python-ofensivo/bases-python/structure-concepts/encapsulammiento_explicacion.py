@@ -7,10 +7,10 @@ from rich import print
 
 class Ejemplo:
     def __init__(self):
-        """Atributo protegido"""
+        """Atributo protegido se puede acceder desde fuera de la clase aunque no se deba"""
         self._atributo_protegido = "soy un atributo protegido y no deberias poder verme"
 
-        """ Atributo privado """
+        """ Atributo privado no se puede acceder desde fuera de la clase _Class__atributo_privado"""
         self.__atributo_privado = "soy un atributo privado y no deberias poder verme"
 
     def mostar_privados(self):
