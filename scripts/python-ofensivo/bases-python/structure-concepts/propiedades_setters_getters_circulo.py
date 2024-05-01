@@ -1,32 +1,40 @@
 #!/usr/bin/env python3
 
-import math
+""" Circulo properties """
+
+from math import pi
 
 
-class Circunferencia:
+class Circulo:
     def __init__(self, radio):
         self._radio = radio
-        print(f"Circulo creado, radio {self._radio}")
+        print(f"[+] Circulo creado! radio: {self._radio}")
 
     @property
     def radio(self):
-        return f"radio: {self._radio}"
+        """radio property."""
+        return self._radio
 
     @radio.setter
     def radio(self, value):
         self._radio = value
-        return f"radio: {self._radio}"
 
     @property
     def diametro(self):
-        return f"diametro: {self._radio*2}"
+        return self._radio * 2
 
     @property
     def area(self):
-        return f"Area: {round(self._radio * math.pi,2)}"
+        return round(self._radio * pi, 2)
 
 
-circulo = Circunferencia(10)
+circulo = Circulo(100)
+print(circulo.radio)
+print(circulo.diametro)
+print(circulo.area)
+# Setter
+circulo.radio = 10
+
 print(circulo.radio)
 print(circulo.diametro)
 print(circulo.area)
