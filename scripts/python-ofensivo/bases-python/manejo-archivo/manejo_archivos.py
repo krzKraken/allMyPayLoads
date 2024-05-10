@@ -81,7 +81,7 @@ shutil.copy("file1.txt", "otro_directorio")
 # NOTE: shutil puede copiar directorios y subdirectorios
 if os.path.exists("directorio"):
     print('[green][+][/green] shutil.copytree("directorio", "otro_directorio")')
-    shutil.copytree("directorio", "otro_directorio")
+    # shutil.copytree("directorio", "otro_directorio")
 
 
 # NOTE: Renombrando recursos con os.rename('origen.txt', 'nuevo_nombre.txt')
@@ -112,3 +112,15 @@ print(
 print(f"os.path.basename(path) -> {os.path.basename(path)} ")
 print(f"os.path.dirname(path) -> {os.path.dirname(path)}")
 print(f"os.path.split(path) -> {os.path.split(path)}")
+
+
+# NOTE: os.getcwd() -> pwd
+current_directory = os.getcwd()
+print(f"os.getcwd() -> {current_directory}")
+
+
+# NOTE: os.listdir(path)
+files_in_current_dir = os.listdir(current_directory)
+print(f"os.listdir(path) -> ")
+for file in files_in_current_dir:
+    print(f"[+] File: {file}")
