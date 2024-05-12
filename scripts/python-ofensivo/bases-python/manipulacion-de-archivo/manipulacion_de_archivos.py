@@ -124,3 +124,7 @@ files_in_current_dir = os.listdir(current_directory)
 print(f"os.listdir(path) -> ")
 for file in files_in_current_dir:
     print(f"[+] File: {file}")
+
+# NOTE: os.getenv() Obtener variables de entorno
+get_env = os.getenv("KITTY_INSTALLATION_DIR")
+print(f"os.getenv(KITTY_INSTALLATION_DIR) -> {get_env}")
