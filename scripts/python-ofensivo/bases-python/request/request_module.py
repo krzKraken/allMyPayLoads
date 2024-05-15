@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 # import os
+from enum import verify
+
 import requests
 from rich import print
 
@@ -68,3 +70,14 @@ if "headers" in data and "User-Agent" in data["headers"]:
     print(data["headers"]["User-Agent"])
 else:
     print("[!] No se encontro campo en json()")
+
+
+# NOTE: request a ssl autofirmado
+print("\n-----------[+] Certificado autofirmado--------------\n")
+import requests
+
+requests.packages.urllib3.disable_warnings(
+    requests.packages.urllib3.exceptions.InsecureRequestWarning
+)
+response = requests.get("https://13.109.185.30/", verify=False)
+print(response.text)
