@@ -7,41 +7,88 @@ class Calculadora:
         self.master = master
         self.display = tk.Entry(self.master, font=self.custom_font, bd=10, insertwidth=1, bg='#6495DE', justify=tk.RIGHT)
         self.display.grid(row=0, column=0, columnspan=4)
+        self.operacion=''
+        self.valor_display = ''
 
-        def clear_display(self):
-            self.display.delete('1.0', tk.END)
+        row = 1
+        col = 0
 
-        def set_number(num):
-            print(f'numero..!!!{num}')
+        buttons= [
+            '7', '8', '9', '/',
+            '4', '5', '6', '*',
+            '1', '2', '3', '-',
+            'C', '0', '.', '+',	
+            '='
+        ]
+        for button in buttons:
+            self.build_button(button, row, col) 
+            col += 1
+            if col > 3:
+                col = 0
+                row += 1
+        self.master.bind('<Key>', self.key_press)
 
-        def set_operacion(num):
-            print('operacion', num)
+    def key_press(self, event):
+        key = event.char
+        if key == '\r':
+            self.calculate()
+            return 
+        elif key == '\b': 
+            self.clear_display()
+            return
+        elif key == '\x1B':
+            self.master.quit()
+            return
 
-        buttons_positions = {
-            '7': (1, 0, '7', set_number),
-            '8': (1, 1, '8', set_number),
-            '9': (1, 2, '9', set_number),
-            '/': (1, 3, '/', set_operacion),
+        self.click(key)
+        
 
-            '4': (2, 0, '4', set_number),
-            '5': (2, 1, '5', set_number),
-            '6': (2, 2, '6', set_number),
-            '*': (2, 3, '*', set_operacion),
 
-            '1': (3, 0, '1', set_number),
-            '2': (3, 1, '2', set_number),
-            '3': (3, 2, '3', set_number),
-            '-': (3, 3, '-', set_operacion),
 
-            'C': (4, 0, 'C', set_number),
-            '0': (4, 1, '0', set_number),
-            '.': (4, 2, '.', set_number),
-            '+': (4, 3, '+', set_operacion),
-        }
+    def calculate(self):
+        if self.valor_display == '' or self.display.get()=='':
+            self.display.delete(0, tk.END)
+        else:
+            valor=self.display.get()
+            print(f'[+] Valor: {valor}')
+            valor_anterior=self.valor_display
+            print(f'[+] Valor_anterior: {valor_anterior}')
+            operacion=self.operacion
+            res = eval(str(valor_anterior) + str(operacion)  + str(valor))
+            print(res)
+            self.display.delete(0, tk.END)
+            self.display.insert(0, str(res))
+            self.valor_display=str(res)
 
-        for button, pos in buttons_positions.items():
-            b = tk.Button(master=self.master, text=button, width=5, command=lambda num=pos[2]: pos[3](num))
-            b.grid(row=pos[0], column=pos[1])
+
+    def build_button(self, button, row, col):
+        if button=='C':
+            b = tk.Button(self.master, text=button, width=10, command=self.clear_display)
+        elif button == '=':
+            b = tk.Button(self.master, text=button, width=10, command=self.calculate)
+        else: 
+            b = tk.Button(self.master, text=button, width=10, command=lambda: self.click(button))
+        b.grid(row=row, column=col)
+    
+    def clear_display(self):
+        self.display.delete(0, tk.END)
+
+    def click(self,key):
+
+        if any( operacion in '*+/-' for operacion in self.display.get() ):
+            self.display.delete(0, tk.END)
+            self.display.insert(tk.END, key)
+
+        elif key in '1234567890.':
+            print(self.display.get())
+            self.display.insert(tk.END, key)
+        elif key in '*+-/':
+            self.operacion=key 
+            self.valor_display=self.display.get()
+            self.display.delete(0, tk.END)
+            self.display.insert(0, key)
+
+            
 
 # Ventana principal
 root = tk.Tk()
