@@ -1,6 +1,9 @@
 import socket
 import threading
 
+def client_thread(client_socket, clients, usernames):
+    username = client_socket.recv(1024).decode()
+    usernames[client_socket]= username
 
 def server_program():
 
@@ -27,7 +30,12 @@ def server_program():
         client_socket, client_address = server_socket.accept()
         clients.append(client_socket)
         print(f"[+] Client has connected: \n\t { client_socket } \n\t {client_address}")
+        thread=threading.Thread(target=client_thread, args=(client_socket, clients, usernames))
+        #NOTE: thread.deamon = True -> Evita que el programa quede colgado
+        thread.daemon = True
+        thread.start()
 
+    server_socket.close()
 
 if __name__ == "__main__":
     server_program()
