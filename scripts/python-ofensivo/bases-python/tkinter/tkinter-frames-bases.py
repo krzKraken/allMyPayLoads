@@ -40,5 +40,4 @@ label4.pack(fill=tk.X)
 label5 = tk.Label(frame2, text="Label en frame 2", background="red")
 label5.pack(fill=tk.X)
 
-
 root.mainloop()
