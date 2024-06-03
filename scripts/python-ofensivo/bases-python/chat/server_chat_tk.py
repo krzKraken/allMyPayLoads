@@ -12,6 +12,23 @@ def client_thread(client_socket, clients, usernames):
             client.sendall(
                 f"\n[+] El usuario {username} ha entrado al chat\n\n".encode()
             )
+    while True:
+        try:
+            message = client_socket.recv(1024).decode()
+
+            if not message:
+                break
+            if message == "!usuarios":
+                client_socket.sendall(
+                    f"[+] Listado de usuarios disponibles \n\n{','.join(usernames.values())}".encode()
+                )
+                continue
+
+            for client in clients:
+                if client is not client_socket:
+                    client.sendall(f"{message}\n".encode())
+        except Exception as e:
+            raise e
 
 
 def server_program():
