@@ -20,15 +20,18 @@ def client_thread(client_socket, clients, usernames):
                 break
             if message == "!usuarios":
                 client_socket.sendall(
-                    f"[+] Listado de usuarios disponibles \n\n{','.join(usernames.values())}".encode()
+                    f"\n[+] Listado de usuarios disponibles: {', '.join(usernames.values())}\n\n".encode()
                 )
                 continue
 
             for client in clients:
                 if client is not client_socket:
                     client.sendall(f"{message}\n".encode())
-        except Exception as e:
-            raise e
+        except:
+            break
+    client_socket.close()
+    clients.remove(client_socket)
+    del usernames[client_socket]
 
 
 def server_program():
@@ -54,6 +57,7 @@ def server_program():
         thread = threading.Thread(
             target=client_thread, args=(client_socket, clients, usernames)
         )
+
         thread.daemon = True
         thread.start()
 

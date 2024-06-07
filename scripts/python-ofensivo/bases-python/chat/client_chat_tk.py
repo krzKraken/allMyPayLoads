@@ -8,13 +8,14 @@ from tkinter.scrolledtext import ScrolledText
 
 def exit_request(client_socket, username, window):
     client_socket.sendall(f"[!] El usuario {username} ha abandonado el chat\n".encode())
+
     client_socket.close()
     window.quit()
     window.destroy()
 
 
 def list_users_request(client_socket):
-    client_socket.sendall("!usuaros".encode())
+    client_socket.sendall("!usuarios".encode())
 
 
 def send_message(event, client_socket, username, text_widget, entry_widget):
@@ -56,7 +57,7 @@ def client_program():
     client_socket.sendall(username.encode())
 
     window = tk.Tk()
-    window.geometry("500x500")
+    window.geometry("600x600")
     window.attributes("-topmost", True)
     window.title("Chat")
     # NOTE: State disable desabilita la escritura
