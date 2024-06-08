@@ -47,8 +47,11 @@ def scan_arp_brodcast(ip):
     # Juntando los paquetes a enviar
     complete_packet = broadcast_packet / arp_packet  # -> Empaquetando para enviar
     # NOTE: Al enviar recibimos dos respuesta, los que responden y los que no
-    answered, unanswered = scapy.srp(complete_packet, timeout=1, verbose=True)
-    print(answered, unanswered.summary())
+    answered_list = scapy.srp(complete_packet, timeout=1, verbose=False)[0]
+    # NOTE: Scapy imprime en consola el resumen al llamar la funcion
+    # print(colored(f"[+] Host activos:\n\t{response}", "green"))
+    for sent, received in answered_list:
+        print(f"Ip: {received.psrc} -> MAC: {received.hwsrc}")
 
 
 def main():
