@@ -1,7 +1,6 @@
 import argparse
 
 from scapy.all import ARP, Ether, srp
-from termcolor import colored
 
 
 def arp_scan(ip_range):
