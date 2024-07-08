@@ -21,6 +21,7 @@ signal.signal(signal.SIGINT, def_handler)
 def set_load(packet, load):
     packet[scapy.Raw].load = load
     print(packet.show())
+
     return packet
 
 
@@ -37,8 +38,8 @@ def process_packet(packet):
                 )
                 # NOTE: construyendo la carga modificada
                 new_packet = set_load(scapy_packet, modified_load)
-
                 print(scapy_packet.show())
+
             elif scapy_packet[scapy.TCP].sport == 80:
                 print("\n[+] Respuesta del servidor: \n")
                 print(scapy_packet.show())
