@@ -1,0 +1,31 @@
+apt install docker.io
+
+service docker start
+
+# Comandos docker
+docker ps 
+docker images
+
+# Creacion de Dockerfile para forwarding
+
+FROM php:7.0-apache
+COPY index.php /var/www/html/
+EXPOSE 80
+
+# Creacion del contenedor con docker
+docker build . -t web_server
+
+
+docker images 
+docker run --rm -dit -p 80:80 <nombre_contenedor>
+--rm -> Elimina el contendor cuando se termina
+-dit -> d detach (en segundo plano) it (consola interactiva)
+-p 80:80 port forwarding para que el puerto 80 del contenedor sea el mismo que la maquina host
+
+# Verificar los puertos
+docker ps -> obener el nombre del contenedor
+docker port <nombre_contenedor>
+
+# Abrir una consola interactiva 
+docker exec -it <nombre_contenedor> bash
+
