@@ -31,7 +31,7 @@ def get_arguments():
         "--target",
         required=True,
         dest="target",
-        help="Host or host range of lan to scann",
+        help="Host (192.168.100.2) or host range of lan to scann (192.168.100.1-100)",
     )
     args = parser.parse_args()
     return args.target
