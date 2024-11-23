@@ -51,13 +51,14 @@ def convert_to_bin(ip):
     return ".".join(ip_bin)
 
 
-def convert_to_hex(ip_bin):
+def convert_to_decimal(ip_bin):
     ip = ip_bin.split(".")
     ip_decimal = [str(int(i, 2)) for i in ip]
     return ".".join(ip_decimal)
 
 
-def get_network_mask(cidr, name="Network Mask"):
+def get_network_mask(cidr):
+    # INFO: El calculo de la Network Mask se realiza colocando 1 en los bits de las direcciones de red de izq a derecha
     cadena_cidr = ("1" * cidr).zfill(32)
     network_mask = cadena_cidr[::-1]
     net_mask_formated = [
@@ -67,6 +68,7 @@ def get_network_mask(cidr, name="Network Mask"):
 
 
 def apply_and_to_binaries(cadena1, cadena2):
+    # INFO: El calculo del Network ID es el AND de IP y la Network Mask
     # Dividir las cadenas en octetos usando el separador .
     octeto1 = cadena1.split(".")
     octeto2 = cadena2.split(".")
@@ -83,6 +85,37 @@ def apply_and_to_binaries(cadena1, cadena2):
     return ".".join(resultado_octetos)
 
 
+def get_broadcast(ip_bin, cidr):
+    # INFO: El broadcast address reemplaza el numero de bits de host de atras hacia delante en la ip original
+    ip_reversed = list(reversed(ip_bin.replace(".", "")))
+    host = 32 - cidr
+    for i in range(host):
+        ip_reversed[i] = "1"
+    broadcast_address = "".join(reversed(ip_reversed))
+    broadcast_address = ".".join(
+        [broadcast_address[i : i + 8] for i in range(0, 32, 8)]
+    )
+    return broadcast_address
+
+
+def get_host_min(network_id):
+    octetos = network_id.split(".")
+    last_octeto = int(octetos[-1], 2)  # convetir decimal el ultimo octeto
+    last_octeto += 1
+    # Reconstruir la direcccion con el ultimo octeto en binario
+    octetos[-1] = bin(last_octeto)[2:].zfill(8)
+    return ".".join(octetos)
+
+
+def get_host_max(broadcast_address):
+    octetos = broadcast_address.split(".")
+    last_octeto = int(octetos[-1], 2)  # convetir decimal el ultimo octeto
+    last_octeto -= 1
+    # Reconstruir la direcccion con el ultimo octeto en binario
+    octetos[-1] = bin(last_octeto)[2:].zfill(8)
+    return ".".join(octetos)
+
+
 def main():
     input_ip = get_arguments().ip
     if is_valid_ip(input_ip):
@@ -92,15 +125,20 @@ def main():
         # Convert IP to binary
         ip_bin = convert_to_bin(ip)
         print(f"\n[+] IP: {input_ip}\n")
-        print(f"{ip_bin}\t->\t({ip})")
+        print(f"{ip_bin}\t->\t({ip}) IP Original")
         # Get the network mask from CIDR
         network_mask = get_network_mask(cidr)
-        print(f"{network_mask}\t->\t({convert_to_hex(network_mask)})")
+        print(f"{network_mask}\t->\t({convert_to_decimal(network_mask)}) Network Mask")
         # Get the AND between ip and netmask
         network_id = apply_and_to_binaries(ip_bin, network_mask)
-        print(f"{network_id}\t->\t({convert_to_hex(network_id)})")
-
-        # TODO: Broadcast addres sustituir los bits de host de atras hacia delante en la network id por 1
+        print(f"{network_id}\t->\t({convert_to_decimal(network_id)}) Network ID")
+        broadcast = get_broadcast(ip_bin, cidr)
+        print(f"{broadcast}\t->\t({convert_to_decimal(broadcast)}) Broadcast Address")
+        # MIn host
+        host_min = get_host_min(network_id)
+        print(f"{host_min}\t->\t({convert_to_decimal(host_min)}) Host Min")
+        host_max = get_host_max(broadcast)
+        print(f"{host_max}\t->\t({convert_to_decimal(host_max)}) Host Max")
 
 
 if __name__ == "__main__":
