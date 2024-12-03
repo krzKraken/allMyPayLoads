@@ -1,0 +1,12 @@
+# Parametros generarles nmap
+
+> nmap -p1-65535 <ip_destino>
+    -p1-65535       -> Enumera el rango de los puertos del 1 al 65535 
+    -p-             -> Enumera sdftodos los puertos pero de forma abreviada
+    --top-port 1000 -> Enumera de la lista del top 1000 puertos 
+    -p- --open      -> Enumera todos los puertos con estado open 
+    -p- -T[0-5]     -> Enumera todos los puertos con velocidad 1 paranoico a 5 insano
+    -sT             -> Filtra por conexiones TCP 
+    -sU             -> Filtra por conexiones UDP
+
+
