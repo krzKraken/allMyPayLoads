@@ -1,0 +1,15 @@
+172.14.15.16/17 
+
+1) IP: Pasar la ip a binario
+10101100.00001110.00001111.00010001 (172.14.15.16) -> Direccion IP
+
+2) Mask: Colocar los 1 en los bits del CIDR para la red (17)
+11111111.11111111.10000000.00000000 (255.255.128.0) -> Mascara de subred
+
+3) NetworkID: Aplicar un AND para la ip en binario y la mascara de red 
+10101100.00001110.00000000.00000000 [AND] (172.14.0.0) -> Network ID
+
+4) Broadcast Address: Colocar los 1 en los bits del CIDR para el host en la IP original (32-17=15)
+10101100.00001110.01111111.11111111 (172.14.127.255) -> Broadcast Address
+
+

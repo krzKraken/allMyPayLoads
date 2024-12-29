@@ -1,7 +1,13 @@
 # MacOS
 .DS_Store
 *.swp
+/env
+.env
+env/
+venv/
+/venv
 
+hack/
 # Linux
 *~
 

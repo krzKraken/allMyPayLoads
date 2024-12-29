@@ -1,40 +1,58 @@
 import socket
 import threading
 
+
 def client_thread(client_socket, clients, usernames):
+    print("[+] Cliente Thread init")
     username = client_socket.recv(1024).decode()
-    usernames[client_socket]= username
+    print(f"Se ha registrado el usuario] { username }")
+
+    usernames[client_socket] = username
+    print(f"\n[+] Se ha conectado el usuario {username} al chat...")
+
 
 def server_program():
+    """
+    Server program manage conections
+    """
+    host = "localhost"
+    port = 12345
 
-    HOST = "localhost"
-    PORT = 12345
-
-    # NOTE: Create server socket IPV4 family
+    # crea el server socket
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    # NOTE: SetSocketOpt -> reuse ports
+    # Time wait no se ponga el servidor ocupado
     server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    # NOTE: Socket en host y port
-    server_socket.bind((HOST, PORT))
-    # NOTE: Socket en escucha de n conexiones
+    # En escucha en el puerto en el host
+    server_socket.bind((host, port))
+    # En escucha el server
     server_socket.listen()
 
-    print(f"[+] Server runing on {HOST}:{PORT} waiting for conections...")
+    print(f"[+] El servidor esta en escucha en {host}:{port}")
 
-    # INFO: What's server do on any confirmed conection
     clients = []
+    # socket : username
     usernames = {}
 
     while True:
-
+        # Aceptando conexiones entrantes en el server
         client_socket, client_address = server_socket.accept()
+
         clients.append(client_socket)
-        print(f"[+] Client has connected: \n\t { client_socket } \n\t {client_address}")
-        thread=threading.Thread(target=client_thread, args=(client_socket, clients, usernames))
-        #NOTE: thread.deamon = True -> Evita que el programa quede colgado
+        print(f"[+] Se ha conectado un nuevo cliente {client_address}")
+
+        # Creando el hilo al crear la conexion #NOTE: Hilo
+        thread = threading.Thread(
+            target=client_thread, args=(client_socket, clients, usernames)
+        )
+        # NOTE: thead.daemon=True finaliza el demonio al cerrar la funcion padre -> server_program() """
         thread.daemon = True
         thread.start()
-
     server_socket.close()
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 8978026a1b47a96e21907eccccc2f106e1f66818
 if __name__ == "__main__":
     server_program()
+
