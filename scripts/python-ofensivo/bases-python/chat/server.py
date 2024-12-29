@@ -36,6 +36,5 @@ def server_program():
         thread.start()
 
     server_socket.close()
-
 if __name__ == "__main__":
     server_program()
