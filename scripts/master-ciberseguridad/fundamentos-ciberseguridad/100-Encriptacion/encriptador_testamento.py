@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 
 """
-Este script automatiza la encriptacion de un documento 'testamento.txt' en AES256, la clave con la que se encripta se divide en tres fragmentos y con una clave publica
-RSA2048 por cada hijo se encripta y solo con la clave privada de cada hijo podran decifrar y juntar los fragmentos para poder desencriptar el testamento. 
-"""
+Este script automatiza la encriptacion de un documento 'testamento.txt en AES256, esta clave generada se fragmenta en 3 y es encriptada con la clave pública de cada hermano y obtienen cada uno la clave priada y el fragmento encriptado con su respectiva clave pública. """
 
 from termcolor import colored
 import signal 
@@ -11,7 +9,7 @@ import sys
 import os 
 from Crypto.Cipher import AES, PKCS1_OAEP
 from Crypto.Util.Padding import pad, unpad
-from Crypto.PublicKey import RSA 
+from Crypto.PublicKey import RSA
 
 
 # Cntrl + c => Forzar salida 
