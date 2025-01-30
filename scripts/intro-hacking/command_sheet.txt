@@ -1,0 +1,11 @@
+# Ver los procesos ejecutandose 
+# Conociendo el puerto podemos ver el pid del proceso ejecutandose 
+lsof -i:<puerto> 
+
+# Con el pid del proceso podemos ver el origen del mismo 
+pwdx <pid>
+
+
+# Convertir de hex a texto claro 
+echo '686f6c610a' | xxd -ps -r
+

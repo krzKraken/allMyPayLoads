@@ -8,5 +8,54 @@
     -p- -T[0-5]     -> Enumera todos los puertos con velocidad 1 paranoico a 5 insano
     -sT             -> Filtra por conexiones TCP 
     -sU             -> Filtra por conexiones UDP
+    -sS             -> SelfScan no concreta la conexion haciendola mas sigilosa e intenta no dejar registro
+# Escaneo rapido
+  > nmap -p- --open -sS --min-rate 5000 <ip-destino> -n -Pn -vvv
 
+# Escaneo de version y scripts de reconocimiento 
+  > nmap -p<puertos> -sV -sC <ip-destino> 
 
+# Aplicando reconocimiento con scripts especificos
+  > nmpa -p<puertos> --script http-enum <ip-destino>
+    # Filtrar por categorias disponibles
+      > locate .nse | xargs grep 'categories' | grep -oP '".*?"' | sort -u
+  # Aplicar grupos de categorias en scripts 
+      > nmpa -p<ports> <ip-destino> --script='vuln and safe' 
+
+# Evasion de firewall
+  # Paquetes fragmentados 
+    > nmap -p22 172.16.0.1 -f 
+  # Limitando el maximo de tamano de los paquetes 
+    > nmap -p22 172.16.0.1 --mtu 8    # El mtu debe ser multiplo de 8
+  # Decoy (varias ip simulan la solicitud)
+    > nmap -p22 172.16.0.1 -D <ips-decoys>
+  # Puertos de origen 
+    > nmap -p22 172.16.0.1 --source-port 45
+  # Tamanos de paquetes 
+    > nmap -p22 172.16.0.1 --data-lenght <valor-en-enteros>
+  # mac spoofing 
+    > nmap -p22 172.16.0.1 --spoof-mac Dell -n -Pn -v
+  
+
+# Captura de paquetes usando tcpdump 
+  > tcpdump -i wlan0 -w Captura.cap -v 
+
+# Ver la captura en wireshark
+  > sudo wireshark -r Captura.cap &>/dev/null & disown 
+    # Filtrar por paquetes fragmentados 
+      > ip.flags.mf == 1 
+    # Filtrar por destino 
+      > ip.dst == 172.16.0.1
+    # Filtrar por sources 
+      > ip.src == 172.16.4.1
+    # Filtrar por puertos 
+      > tcp.port == 22 
+
+# Ver capturas usando tshark 
+  > tshark -r Capture.cap -Y <filtros> -Tjson 2>/dev/null 
+    # Filtar por algo y ver en formato json 
+      > tshark -r Capture.cap -Y 'http' -Tjson 2>/dev/null 
+    # Filtar y ver en formato Json y ver el contenido de un valor y convertir de hex a texto claro
+      > tshark -r Capture.cap -Y 'http' -e Tfields tcp.payload  2>/dev/null | xxd -ps -r 
+  
+  
