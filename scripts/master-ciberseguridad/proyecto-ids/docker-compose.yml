@@ -1,0 +1,14 @@
+version: '3'
+services:
+  snort:
+    build: ./snort 
+    container_name: snort
+    networks:
+      - ids_network
+    cap_add:
+      - NET_ADMIN # permite capturar trafico enla interfaz
+    restart: unless-stopped
+
+networks:
+  ids_network:
+    driver: bridge
