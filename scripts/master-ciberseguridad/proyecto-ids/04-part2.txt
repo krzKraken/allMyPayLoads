@@ -1,0 +1,4 @@
+# Se requiere un tokend de session para hacer la conexion a la base de datos 
+
+Token
+Rry39yZ5YOzls9yIn0WTYU1dUyDeFv9zEaNbp8J7yWpnHeTgrBLTMNrmu01pQSMc-hQU4zVh52VCtUuKGbIF7Q==
